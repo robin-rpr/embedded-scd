@@ -49,10 +49,9 @@ jobs:
       
     - name: Upload driver artifact
       uses: actions/upload-artifact@v1.0.0
-      working-directory: embedded-scd
       with:
         name: driver
-        path: release/scd30
+        path: embedded/release/scd30
         
   build-wasm:
     runs-on: ubuntu-latest

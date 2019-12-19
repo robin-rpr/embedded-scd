@@ -118,9 +118,9 @@ jobs:
         run: npm install --ignore-scripts
 
       - name: Download wasm artifact
-          uses: actions/download-artifact@v1
-          with:
-            name: wasm
+        uses: actions/download-artifact@v1
+        with:
+          name: wasm
 
       - name: Build
         run: npm run build

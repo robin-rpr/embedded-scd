@@ -1,0 +1,3 @@
+[submodule "embedded-scd"]
+	path = embedded-scd
+	url = https://github.com/Sensirion/embedded-scd.git

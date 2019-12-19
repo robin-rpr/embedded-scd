@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es7", "dom"],
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "inlineSources": true,
+    "rootDirs": ["./src", "./wasm"],
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["reflect-metadata", "node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false
+  },
+  "exclude": ["./dist/*/**",
+    "node_modules/@types/**/*.d.ts"]
+}

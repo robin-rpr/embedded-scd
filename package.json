@@ -1,0 +1,34 @@
+{
+  "name": "@robin-rpr/embedded-scd",
+  "version": "1.0.0",
+  "description": "This package contains the embedded driver sources for Sensirion's SCD product line",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robin-rpr/embedded-scd.git"
+  },
+  "keywords": [
+    "scd30",
+    "embedded-scd",
+    "sensirion",
+    "scd",
+    "driver"
+  ],
+  "author": "Robin Röper, Sensirion AG",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/robin-rpr/embedded-scd/issues"
+  },
+  "homepage": "https://github.com/robin-rpr/embedded-scd#readme",
+  "devDependencies": {
+    "typescript": "^3.7.3"
+  }
+}

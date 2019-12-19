@@ -1,0 +1,133 @@
+name: main
+
+on:
+  push:
+    branches: 
+    - master
+
+jobs:
+  build-driver:
+
+    runs-on: ubuntu-latest
+    container: 
+      image: gcc:5.5
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    
+    - name: Update System dependencies
+      run: apt update
+    
+    - name: Install System dependencies
+      run: |
+        apt install -y \
+          zip
+      
+    - name: Make
+      working-directory: embedded-scd
+      run: |
+        make prepare
+        make
+        make clean
+        make release
+          
+    - name: Build stub release driver
+      working-directory: embedded-scd/release/scd30
+      run: |
+        make CONFIG_I2C_TYPE=hw_i2c
+        make CONFIG_I2C_TYPE=sw_i2c
+        make clean
+          
+    - name: Build Linux release drivers
+      working-directory: embedded-scd/release/scd30
+      run: |
+        make CONFIG_I2C_TYPE=hw_i2c hw_i2c_impl_src=hw_i2c/sample-implementations/linux_user_space/sensirion_hw_i2c_implementation.c
+        make CONFIG_I2C_TYPE=sw_i2c sw_i2c_impl_src=sw_i2c/sample-implementations/linux_user_space/sensirion_sw_i2c_implementation.c
+        make clean
+      
+    - name: Upload driver artifact
+      uses: actions/upload-artifact@v1.0.0
+      working-directory: embedded-scd
+      with:
+        name: driver
+        path: release/scd30
+        
+  build-wasm:
+    runs-on: ubuntu-latest
+    container:
+      image: trzeci/emscripten
+    needs: [build-driver]
+    steps:
+      - name: Download driver artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: driver
+
+      - name: Setup Emscripten
+        run: |
+          export OPTIMIZE="-Os"
+          export LDFLAGS="${OPTIMIZE}"
+          export CFLAGS="${OPTIMIZE}"
+          export CXXFLAGS="${OPTIMIZE}"
+
+      - name: Compiling wasm bindings
+        run: |
+          emcc \
+            ${OPTIMIZE} \
+            --bind \
+            -s STRICT=1 \
+            -s ALLOW_MEMORY_GROWTH=1 \
+            -s MALLOC=emmalloc \
+            -s MODULARIZE=1 \
+            -s EXPORT_ES6=1 \
+            -o ./scd30.js \
+             driver/scd30.c
+     
+      - name: Move artifacts
+        run: |
+          mkdir -p dist
+          mv -t dist scd30.js scd30.wasm
+          
+      - name: Upload wasm artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: wasm
+          path: dist/
+
+  build-package:
+    runs-on: ubuntu-latest
+    container:
+      image: node:dubnium-jessie
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install App Dependencies
+        run: npm install --ignore-scripts
+
+      - name: Download wasm artifact
+          uses: actions/download-artifact@v1
+          with:
+            name: wasm
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload ackage artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: package
+          path: dist/
+

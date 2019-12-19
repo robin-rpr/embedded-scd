@@ -51,9 +51,10 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: driver
-        path: embedded/release/scd30
+        path: release/scd30
         
   build-wasm:
+    
     runs-on: ubuntu-latest
     container:
       image: trzeci/emscripten
@@ -96,9 +97,11 @@ jobs:
           path: dist/
 
   build-package:
+    
     runs-on: ubuntu-latest
     container:
       image: node:dubnium-jessie
+    needs: [build-wasm]
     steps:
       - name: Checkout
         uses: actions/checkout@v1

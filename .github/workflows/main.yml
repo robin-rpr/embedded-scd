@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: driver
-        path: release/scd30
+        path: embedded-scd/release/scd30
         
   build-wasm:
     

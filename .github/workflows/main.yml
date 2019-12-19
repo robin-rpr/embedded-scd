@@ -106,6 +106,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Install App Dependencies
+        run: npm install --ignore-scripts
+
       - name: Cache node modules
         uses: actions/cache@v1
         with:
@@ -115,9 +118,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
-      - name: Install App Dependencies
-        run: npm install --ignore-scripts
 
       - name: Download wasm artifact
         uses: actions/download-artifact@v1

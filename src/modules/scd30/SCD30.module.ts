@@ -1,4 +1,5 @@
-import Module from '../../../wasm/scd30.js';
+// @ts-ignore
+import Module from '../scd30/wasm-scd30/scd30.js';
 import {ESCD30ProbeStatus} from "./enums/scd30.enum.js";
 import {ISCD30Measurement} from "./models/scd30.model.js";
 

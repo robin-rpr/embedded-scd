@@ -72,7 +72,7 @@ jobs:
           export CFLAGS="${OPTIMIZE}"
           export CXXFLAGS="${OPTIMIZE}"
 
-      - name: Compiling wasm bindings
+      - name: Compiling wasm-scd30 bindings
         run: |
           emcc \
             ${OPTIMIZE} \
@@ -90,10 +90,10 @@ jobs:
           mkdir -p dist
           mv -t dist scd30.js scd30.wasm
           
-      - name: Upload wasm artifact
+      - name: Upload wasm-scd30 artifact
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: wasm
+          name: wasm-scd30
           path: dist/
 
   build-package:
@@ -106,9 +106,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Install App Dependencies
-        run: npm install --ignore-scripts
-
       - name: Cache node modules
         uses: actions/cache@v1
         with:
@@ -119,13 +116,21 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Download wasm artifact
+      - name: Install App Dependencies
+          run: npm install --ignore-scripts
+
+      - name: Download wasm-scd30 artifact
         uses: actions/download-artifact@v1
         with:
-          name: wasm
+          name: wasm-scd30
 
       - name: Build
         run: npm run build
+
+      - name: Move artifacts
+          run: |
+            mv -t dist package.json
+            mv -r wasm-scd30 dist/src/modules/scd30
 
       - name: Upload ackage artifact
         uses: actions/upload-artifact@v1.0.0

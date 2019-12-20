@@ -142,12 +142,27 @@ jobs:
   publish:
     runs-on: [ubuntu-latest]
     needs: [build-package]
+    container:
+      image: node:dubnium-jessie
+
     steps:
-    - name: Download package artifact
-      uses: actions/download-artifact@v1
-      with:
-        name: package
-    
-    - name: Publish package to npm
-      uses: anton-yurchenko/github-npm-publisher@v0.0.1
+      - name: Install npm modules
+        run: npm install -g npm-cli-login
+
+      - name: Npm CLI Login
+        env:
+          NPM_USER: ${{ secrets.USERNAME }}
+          NPM_PASS: ${{ secrets.ACCESS_TOKEN }}
+          NPM_EMAIL: ${{ secrets.EMAIL }}
+          NPM_REGISTRY: https://npm.pkg.github.com/
+        run: npm-cli-login
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: package
+
+      - name: Publish package to GitHub Packages
+        working-directory: package/
+        run: npm publish
 

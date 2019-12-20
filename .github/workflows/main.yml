@@ -138,3 +138,14 @@ jobs:
           name: package
           path: dist/
 
+  publish:
+    runs-on: [ubuntu-latest]
+    steps:
+    - name: Download package artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: package
+    
+    - name: Publish package to npm
+      uses: anton-yurchenko/github-npm-publisher@v0.0.1
+

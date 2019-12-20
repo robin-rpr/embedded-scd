@@ -1,5 +1,5 @@
-import {ISCD30Measurement} from "./modules/scd30/models/scd30.model.js";
-import {ESCD30ProbeStatus} from "./modules/scd30/enums/scd30.enum.js";
+import {ISCD30Measurement} from "./modules/SCD30/models/SCD30.model.js";
+import {ESCD30ProbeStatus} from "./modules/SCD30/enums/SCD30.enum.js";
 import { scd30 } from "./main.js";
 
 const interval_in_seconds = 2;

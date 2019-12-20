@@ -1,7 +1,7 @@
 // @ts-ignore
-import Module from '../scd30/wasm-scd30/scd30.js';
-import {ESCD30ProbeStatus} from "./enums/scd30.enum.js";
-import {ISCD30Measurement} from "./models/scd30.model.js";
+import Module from './wasm-scd30/scd30.js';
+import {ESCD30ProbeStatus} from "./enums/SCD30.enum.js";
+import {ISCD30Measurement} from "./models/SCD30.model.js";
 
 const module = Module();
 

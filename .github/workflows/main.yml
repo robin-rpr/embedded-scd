@@ -130,7 +130,7 @@ jobs:
       - name: Move artifacts
         run: |
           mv -t dist package.json
-          mv wasm-scd30 dist/src/modules/SCD30
+          mv wasm-scd30 dist/modules/SCD30
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v1.0.0

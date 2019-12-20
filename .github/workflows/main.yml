@@ -82,6 +82,7 @@ jobs:
             -s MALLOC=emmalloc \
             -s MODULARIZE=1 \
             -s EXPORT_ES6=1 \
+            -s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall'] \
             -o ./scd30.js \
              driver/scd30.c
      

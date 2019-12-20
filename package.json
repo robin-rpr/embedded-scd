@@ -5,7 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "node example_scd30.js"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

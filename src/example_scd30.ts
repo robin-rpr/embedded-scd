@@ -1,10 +1,10 @@
-import {ISCD30Measurement} from "./src/modules/scd30/models/scd30.model";
-import {ESCD30ProbeStatus} from "./src/modules/scd30/enums/scd30.enum";
-import { scd30 } from "./main";
+import {ISCD30Measurement} from "./modules/scd30/models/scd30.model.js";
+import {ESCD30ProbeStatus} from "./modules/scd30/enums/scd30.enum.js";
+import { scd30 } from "./main.js";
 
 const interval_in_seconds = 2;
 
-async function example() {
+(async () => {
 
     /* Initialize I2C */
     scd30.sensirion_i2c_init();
@@ -39,4 +39,4 @@ async function example() {
             console.error(err)
         }
     }
-}
+})();

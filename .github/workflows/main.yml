@@ -130,7 +130,7 @@ jobs:
       - name: Move artifacts
         run: |
           mv -t dist package.json
-          mv -r wasm-scd30 dist/src/modules/scd30
+          mv wasm-scd30 dist/src/modules/scd30
 
       - name: Upload ackage artifact
         uses: actions/upload-artifact@v1.0.0

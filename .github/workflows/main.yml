@@ -2,29 +2,21 @@ name: main
 
 on:
   push:
-    branches: 
+    branches:
     - master
 
 jobs:
   build-driver:
-
     runs-on: ubuntu-latest
-    container: 
-      image: gcc:5.5
     steps:
     - uses: actions/checkout@v1
-    
+
     - name: Checkout submodules
       run: git submodule update --init --recursive
-    
+
     - name: Update System dependencies
       run: apt update
-    
-    - name: Install System dependencies
-      run: |
-        apt install -y \
-          zip
-      
+
     - name: Make
       working-directory: embedded-scd
       run: |
@@ -32,29 +24,28 @@ jobs:
         make
         make clean
         make release
-          
+
     - name: Build stub release driver
       working-directory: embedded-scd/release/scd30
       run: |
         make CONFIG_I2C_TYPE=hw_i2c
         make CONFIG_I2C_TYPE=sw_i2c
         make clean
-          
+
     - name: Build Linux release drivers
       working-directory: embedded-scd/release/scd30
       run: |
         make CONFIG_I2C_TYPE=hw_i2c hw_i2c_impl_src=hw_i2c/sample-implementations/linux_user_space/sensirion_hw_i2c_implementation.c
         make CONFIG_I2C_TYPE=sw_i2c sw_i2c_impl_src=sw_i2c/sample-implementations/linux_user_space/sensirion_sw_i2c_implementation.c
         make clean
-      
+
     - name: Upload driver artifact
       uses: actions/upload-artifact@v1.0.0
       with:
         name: driver
         path: embedded-scd/release/scd30
-        
+
   build-wasm:
-    
     runs-on: ubuntu-latest
     container:
       image: trzeci/emscripten
@@ -82,15 +73,30 @@ jobs:
             -s MALLOC=emmalloc \
             -s MODULARIZE=1 \
             -s EXPORT_ES6=1 \
-            -s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall'] \
+            -s "EXTRA_EXPORTED_RUNTIME_METHODS=[\
+              'scd30_read_measurement',\
+              'scd30_get_data_ready',\
+              'scd30_probe',\
+              'scd30_get_driver_version',\
+              'scd30_get_configured_address']" \
+            -s "EXPORTED_FUNCTIONS='[\
+              'scd30_start_periodic_measurement',\
+              'scd30_stop_periodic_measurement',
+              'scd30_read_serial',
+              'scd30_set_measurement_interval',
+              'scd30_get_data_ready',
+              'scd30_set_temperature_offset',
+              'scd30_set_altitude',
+              'scd30_set_forced_recalibration',
+              'scd30_enable_automatic_self_calibration']" \
             -o ./scd30.js \
              driver/scd30.c
-     
+
       - name: Move artifacts
         run: |
           mkdir -p dist
           mv -t dist scd30.js scd30.wasm
-          
+
       - name: Upload wasm-scd30 artifact
         uses: actions/upload-artifact@v1.0.0
         with:
@@ -98,10 +104,7 @@ jobs:
           path: dist/
 
   build-package:
-    
     runs-on: ubuntu-latest
-    container:
-      image: node:dubnium-jessie
     needs: [build-wasm]
     steps:
       - name: Checkout
@@ -139,12 +142,9 @@ jobs:
           name: package
           path: dist/
 
-  publish:
-    runs-on: [ubuntu-latest]
+  publish-npm:
+    runs-on: ubuntu-latest
     needs: [build-package]
-    container:
-      image: node:dubnium-jessie
-
     steps:
       - name: Install npm modules
         run: npm install -g npm-cli-login

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["es7", "dom"],
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom"],
     "declaration": true,
     "outDir": "./dist",
     "sourceMap": true,

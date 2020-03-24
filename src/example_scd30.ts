@@ -24,7 +24,7 @@ const interval_in_seconds = 2;
     scd30.scd30_start_periodic_measurement();
     scd30.sensirion_sleep_usec(interval_in_seconds * 1000000);
 
-    while (1) {
+    setInterval(() => {
         /* Measure co2, temperature and relative humidity and store into
          * variables.
          */
@@ -38,5 +38,5 @@ const interval_in_seconds = 2;
         } catch (err) {
             console.error(err)
         }
-    }
+    }, 2000)
 })();

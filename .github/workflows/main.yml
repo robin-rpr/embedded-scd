@@ -76,7 +76,7 @@ jobs:
               'scd30_probe',\
               'scd30_get_driver_version',\
               'scd30_get_configured_address'] \
-            -s EXPORTED_FUNCTIONS='[\
+            -s EXPORTED_FUNCTIONS=[\
               'scd30_start_periodic_measurement',\
               'scd30_stop_periodic_measurement',
               'scd30_read_serial',

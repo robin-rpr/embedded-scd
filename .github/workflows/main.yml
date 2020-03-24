@@ -70,13 +70,13 @@ jobs:
             -s MALLOC=emmalloc \
             -s MODULARIZE=1 \
             -s EXPORT_ES6=1 \
-            -s "EXTRA_EXPORTED_RUNTIME_METHODS=[\
+            -s EXTRA_EXPORTED_RUNTIME_METHODS=[\
               'scd30_read_measurement',\
               'scd30_get_data_ready',\
               'scd30_probe',\
               'scd30_get_driver_version',\
-              'scd30_get_configured_address']" \
-            -s "EXPORTED_FUNCTIONS='[\
+              'scd30_get_configured_address'] \
+            -s EXPORTED_FUNCTIONS='[\
               'scd30_start_periodic_measurement',\
               'scd30_stop_periodic_measurement',
               'scd30_read_serial',
@@ -85,7 +85,7 @@ jobs:
               'scd30_set_temperature_offset',
               'scd30_set_altitude',
               'scd30_set_forced_recalibration',
-              'scd30_enable_automatic_self_calibration']" \
+              'scd30_enable_automatic_self_calibration'] \
             -o ./scd30.js \
              driver/scd30.c
 

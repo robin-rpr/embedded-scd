@@ -12,7 +12,7 @@ COPY --chown=root:root . .
 RUN git submodule update --init --recursive
 
 # Install System Dependencies
-RUN apt updat
+RUN apt update
 RUN apt install -y zip
 
 # Make

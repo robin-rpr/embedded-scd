@@ -5,8 +5,9 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "test": "node example_scd30.js"
+    "docker": "docker build -t embedded-scd -f docker/Dockerfile . --no-cache && docker create --name builder embedded-scd && docker cp builder:/home/node/app/dist . && docker container rm builder",
+    "build": "npx webpack --display-error-details",
+    "test": "node --experimental-modules example_scd30.js"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
@@ -29,7 +30,10 @@
   },
   "homepage": "https://github.com/robin-rpr/embedded-scd#readme",
   "devDependencies": {
-    "typescript": "^3.7.3"
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "@types/node": "^12.12.21"

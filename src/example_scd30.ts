@@ -1,6 +1,6 @@
-import {ISCD30Measurement} from "./modules/SCD30/models/SCD30.model.js";
-import {ESCD30ProbeStatus} from "./modules/SCD30/enums/SCD30.enum.js";
-import { scd30 } from "./main.js";
+import {ISCD30Measurement} from "./modules/SCD30/models/SCD30.model";
+import {ESCD30ProbeStatus} from "./modules/SCD30/enums/SCD30.enum";
+import { scd30 } from "./main";
 
 const interval_in_seconds = 2;
 
@@ -24,7 +24,7 @@ const interval_in_seconds = 2;
     scd30.scd30_start_periodic_measurement();
     scd30.sensirion_sleep_usec(interval_in_seconds * 1000000);
 
-    setInterval(() => {
+    setInterval(async () => {
         /* Measure co2, temperature and relative humidity and store into
          * variables.
          */

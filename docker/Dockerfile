@@ -9,10 +9,10 @@ WORKDIR /root/app
 COPY --chown=root:root . .
 
 # Update Common Repository
-RUN git submodule update --init
+RUN git submodule update --init --recursive
 
 # Install System Dependencies
-RUN apt update
+RUN apt updat
 RUN apt install -y zip
 
 # Make
